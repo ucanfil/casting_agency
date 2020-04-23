@@ -197,16 +197,16 @@ def create_app(test_config=None):
     def delete_actor(payload, actor_id):
         actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
 
-        try:
-            if actor is None:
-                abort(404)
-            else:
-                actor.delete()
+        if actor is None:
+            abort(404)
 
-                return jsonify({
-                    'success': True,
-                    'delete': actor_id,
-                }), 200
+        try:
+            actor.delete()
+
+            return jsonify({
+                'success': True,
+                'delete': actor_id,
+            }), 200
 
         except BaseException:
             abort(422)

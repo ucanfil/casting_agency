@@ -30,7 +30,7 @@ class TriviaTestCase(unittest.TestCase):
             'gender': 'M',
         }
 
-        # headers
+        # Authorization headers
         self.JWTCA = {"Authorization": "Bearer {}".format(
             os.environ['JWT_CASTING_ASSISTANT'])}
 
@@ -95,11 +95,10 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'Unproccesable entity')
 
     def test_patch_movie(self):
-        res = self.client().patch('/movies/3', headers=self.JWTEP,
-                                  json={
-                                      "title": "Lock",
-                                      "release_date": "08-08-1933"
-                                  })
+        res = self.client().patch('/movies/2', headers=self.JWTEP, json={
+                                "title": "Lock",
+                                "release_date": "08-08-1933"
+                            })
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -107,7 +106,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data['movie'])
 
     def test_404_patch_movie(self):
-        res = self.client().patch('/movies/1', headers=self.JWTEP)
+        res = self.client().patch('/movies/2', headers=self.JWTEP)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -115,17 +114,98 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'Not found')
 
     def test_delete_movie(self):
-        res = self.client().delete('/movies/2', headers=self.JWTEP)
+        res = self.client().delete('/movies/3', headers=self.JWTEP)
         data = json.loads(res.data)
 
-        movie = Movie.query.filter(Movie.id == 2).one_or_none()
+        movie = Movie.query.filter(Movie.id == 3).one_or_none()
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['delete'], 2)
+        self.assertEqual(data['delete'], 3)
 
     def test_404_delete_movie(self):
         res = self.client().delete('/movies/1000', headers=self.JWTEP)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+
+    # Fix below HERE TODO FIXME
+    def test_get_actors(self):
+        res = self.client().get('/actors', headers=self.JWTCA)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['actors'])
+
+    def test_404_get_actors(self):
+        res = self.client().get('/actors/starred')
+
+        self.assertEqual(res.status_code, 404)
+
+    def test_get_actor(self):
+        res = self.client().get('/actors/1', headers=self.JWTCA)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['actor'])
+
+    def test_404_get_actor(self):
+        res = self.client().get('/actor/1000')
+
+        self.assertEqual(res.status_code, 404)
+
+    def test_post_actor(self):
+        res = self.client().post('/actors', headers=self.JWTEP,
+                                 json=self.actor)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['insert'])
+
+    def test_422_post_actor(self):
+        res = self.client().post('/actors', headers=self.JWTEP)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Unproccesable entity')
+
+    def test_patch_actor(self):
+        res = self.client().patch('/actors/2', headers=self.JWTEP, json={
+                                "name": "John Doe",
+                                "age": "33",
+                                "gender": "M"
+                            })
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['actor'])
+
+    def test_404_patch_actor(self):
+        res = self.client().patch('/actors/2', headers=self.JWTEP)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Not found')
+
+    def test_delete_actor(self):
+        res = self.client().delete('/actors/3', headers=self.JWTEP)
+        data = json.loads(res.data)
+
+        actor = Actor.query.filter(Actor.id == 3).one_or_none()
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['delete'], 3)
+
+    def test_404_delete_actor(self):
+        res = self.client().delete('/actors/1000', headers=self.JWTEP)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
