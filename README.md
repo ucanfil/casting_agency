@@ -1,10 +1,4 @@
-# Example curl command for DELETE /movies/<int:movie_id> Endpoint
-    curl -H "Accept: application/json" -H "Authorization: Bearer $JWT_EXECUTIVE_PRODUCER" http://$HOSTNAME/movies/10 --request DELETE
-
-
-
-
-# Full Stack Trivia API Backend
+# Backend Casting Agency API
 
 ## Getting Started
 
@@ -112,6 +106,7 @@ The API will return four error types when requests fail:
 * 405: Method not allowed
 * 422: Not Processable
 
+## Important: To test app endpoints on Heroku in curl commands below, change $HOSTNAME variable with $HOST_HEROKU
 ### Endpoints
   * GET '/movies'
     * General
@@ -119,7 +114,7 @@ The API will return four error types when requests fail:
       * Request Arguments: None
       * Returns: List of movies objects and success value.
 
-    * Sample: `curl -H "Accept: application/json" -H "Authorization: Bearer $JWT_CASTING_ASSISTANT" http://$HOSTNAME/movies --request GET`
+    * Sample: `curl -H "Accept: application/json" -H "Authorization: Bearer $JWT_CASTING_ASSISTANT" $HOSTNAME/movies --request GET`
       ```
         {
             "movies":[
@@ -149,7 +144,7 @@ The API will return four error types when requests fail:
       * Request Arguments: `<int:movie_id>`
       * Returns: The movie in question and success value.
 
-    * Sample: `curl -H "Accept: application/json" -H "Authorization: Bearer $JWT_CASTING_ASSISTANT" http://$HOSTNAME/movies/1 --request GET`
+    * Sample: `curl -H "Accept: application/json" -H "Authorization: Bearer $JWT_CASTING_ASSISTANT" $HOSTNAME/movies/1 --request GET`
       ```
         {
             "movie": {
@@ -167,7 +162,7 @@ The API will return four error types when requests fail:
       * Request Arguments: `title, release_date`
       * Returns: Inserted movie dict and success value.
 
-    * Sample: `curl -H "Content-Type: application/json" -X POST -H "Authorization: Bearer $JWT_EXECUTIVE_PRODUCER" -d '{"title":"Eyes Wide Shut","release_date":"12-05-1999"}' http://$HOSTNAME/movies`
+    * Sample: `curl -H "Content-Type: application/json" -X POST -H "Authorization: Bearer $JWT_EXECUTIVE_PRODUCER" -d '{"title":"Eyes Wide Shut","release_date":"12-05-1999"}' $HOSTNAME/movies`
       ```
         {
             "insert": {
@@ -184,7 +179,7 @@ The API will return four error types when requests fail:
       * Request Arguments: `<int:movie_id>, title, release_date`
       * Returns: Inserted movie dict and success value.
 
-    * Sample: `curl -H "Content-Type: application/json" -X PATCH -H "Authorization: Bearer $JWT_EXECUTIVE_PRODUCER" -d '{"title":"Eyes Wide Shut","release_date":"12-05-1998"}' http://$HOSTNAME/movies/5`
+    * Sample: `curl -H "Content-Type: application/json" -X PATCH -H "Authorization: Bearer $JWT_EXECUTIVE_PRODUCER" -d '{"title":"Eyes Wide Shut","release_date":"12-05-1998"}' $HOSTNAME/movies/5`
       ```
         {
             "insert": {
@@ -201,7 +196,7 @@ The API will return four error types when requests fail:
       * Request Arguments: `movie_id`
       * Returns: Success value.
 
-    * Sample: `curl -H "Content-Type: application/json" -X DELETE -H "Authorization: Bearer $JWT_EXECUTIVE_PRODUCER" http://$HOSTNAME/movies/5`
+    * Sample: `curl -H "Content-Type: application/json" -X DELETE -H "Authorization: Bearer $JWT_EXECUTIVE_PRODUCER" $HOSTNAME/movies/5`
       ```
         {
           "success": true,
@@ -215,7 +210,7 @@ The API will return four error types when requests fail:
       * Request Arguments: None
       * Returns: List of actors objects and success value.
 
-    * Sample: `curl -H "Accept: application/json" -H "Authorization: Bearer $JWT_CASTING_ASSISTANT" http://$HOSTNAME/actors --request GET`
+    * Sample: `curl -H "Accept: application/json" -H "Authorization: Bearer $JWT_CASTING_ASSISTANT" $HOSTNAME/actors --request GET`
       ```
         {
             "actors": [
@@ -254,7 +249,7 @@ The API will return four error types when requests fail:
       * Request Arguments: `<int:actor_id>`
       * Returns: The actor in question and success value.
 
-    * Sample: `curl -H "Accept: application/json" -H "Authorization: Bearer $JWT_CASTING_ASSISTANT" http://$HOSTNAME/actors/1 --request GET`
+    * Sample: `curl -H "Accept: application/json" -H "Authorization: Bearer $JWT_CASTING_ASSISTANT" $HOSTNAME/actors/1 --request GET`
       ```
         {
             "actor": {
@@ -273,7 +268,7 @@ The API will return four error types when requests fail:
       * Request Arguments: `name, age, gender`
       * Returns: Inserted actor dict and success value.
 
-    * Sample: `curl -H "Content-Type: application/json" -X POST -H "Authorization: Bearer $JWT_EXECUTIVE_PRODUCER" -d '{"name":"John Doe","age":"45", "gender":"M"}' http://$HOSTNAME/actors`
+    * Sample: `curl -H "Content-Type: application/json" -X POST -H "Authorization: Bearer $JWT_EXECUTIVE_PRODUCER" -d '{"name":"John Doe","age":"45", "gender":"M"}' $HOSTNAME/actors`
       ```
         {
             "insert": {
@@ -291,7 +286,7 @@ The API will return four error types when requests fail:
       * Request Arguments: `<int:actor_id>, name, age, gender`
       * Returns: Inserted actor dict and success value.
 
-    * Sample: `curl -H "Content-Type: application/json" -X PATCH -H "Authorization: Bearer $JWT_EXECUTIVE_PRODUCER" -d '{"name":"Jane Doe","age":"35", "gender":"F"}' http://$HOSTNAME/actors/5`
+    * Sample: `curl -H "Content-Type: application/json" -X PATCH -H "Authorization: Bearer $JWT_EXECUTIVE_PRODUCER" -d '{"name":"Jane Doe","age":"35", "gender":"F"}' $HOSTNAME/actors/5`
       ```
         {
             "actor": {
@@ -309,7 +304,7 @@ The API will return four error types when requests fail:
       * Request Arguments: `actor_id`
       * Returns: Success value.
 
-    * Sample: `curl -H "Content-Type: application/json" -X DELETE -H "Authorization: Bearer $JWT_EXECUTIVE_PRODUCER" http://$HOSTNAME/actors/5`
+    * Sample: `curl -H "Content-Type: application/json" -X DELETE -H "Authorization: Bearer $JWT_EXECUTIVE_PRODUCER" $HOSTNAME/actors/5`
       ```
         {
           "success": true,

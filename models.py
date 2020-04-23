@@ -4,11 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 
 database_name = "casting"
-# database_path = "postgres://{}/{}".format('localhost:5432', database_name)
-database_path = ("postgres://hbacqzqplzzktb:3bf0c195fff1ef978ae85d5e03"
-                 "1c840fb8ad725bbebfd197840a06261799c31c@ec2-52-86-73-86."
-                 "compute-1.amazonaws."
-                 "com:5432/d50qkq20udaov7")
+database_path = "postgres://{}/{}".format('localhost:5432', database_name)
 
 db = SQLAlchemy()
 
