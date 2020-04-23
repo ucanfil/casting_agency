@@ -85,11 +85,11 @@ python test_app.py
 
 ## API Reference
 
-<!-- #### Base URL -->
-At present this app can only be run locally and is not hosted as a base URL. The backend app is hosted at the default, `http://localhost:5000/`. which is set as a proxy in the frontend configuration.
+#### Base URL
+At present this app can be run locally and also be found at hosted at `https://casting-ucanfil.herokuapp.com/`. The backend app is hosted at the default, `http://localhost:5000/`. There is no front-end for this application yet, so use curl or postman for interact with the API.
 
-<!-- #### Authentication -->
-This version of the application does not require authentication or API keys.
+#### Authentication
+RBAC based JWT tokens can be found in `./setup.sh`. You can either use them by running `./setup.sh` or grab the tokens and use it in postman. There are detailed explanations in Api Reference of this README file.
 
 #### Error Handling
 Errors are returned as JSON objects in the following format:
