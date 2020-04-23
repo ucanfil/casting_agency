@@ -32,13 +32,13 @@ class TriviaTestCase(unittest.TestCase):
 
         # Authorization headers
         self.JWTCA = {"Authorization": "Bearer {}".format(
-            os.environ['JWT_CASTING_ASSISTANT'])}
+            os.environ["JWT_CASTING_ASSISTANT"])}
 
         self.JWTCD = {"Authorization": "Bearer {}".format(
-            os.environ['JWT_CASTING_DIRECTOR'])}
+            os.environ["JWT_CASTING_DIRECTOR"])}
 
         self.JWTEP = {"Authorization": "Bearer {}".format(
-            os.environ['JWT_EXECUTIVE_PRODUCER'])}
+            os.environ["JWT_EXECUTIVE_PRODUCER"])}
 
         # binds the app to the current context
         with self.app.app_context():
@@ -65,7 +65,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 404)
 
     def test_get_movie(self):
-        res = self.client().get('/movies/1', headers=self.JWTCA)
+        res = self.client().get('/movies/2', headers=self.JWTCA)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -121,7 +121,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['delete'], 3)
+        self.assertEqual(movie, None)
 
     def test_404_delete_movie(self):
         res = self.client().delete('/movies/1000', headers=self.JWTEP)
@@ -210,6 +210,46 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
+
+    # Test for RBAC
+    # A casting assistant cannot delete actor
+    def test_401_delete_actor(self):
+        res = self.client().delete('/actors/1', headers=self.JWTCA)
+
+        self.assertEqual(res.status_code, 401)
+
+    # A casting assistant cannot post actor
+    def test_401_post_actor(self):
+        res = self.client().post('/actors', headers=self.JWTCA,
+                                 json=self.actor)
+
+        self.assertEqual(res.status_code, 401)
+
+    # A casting director cannot delete movie
+    def test_401_delete_movie(self):
+        res = self.client().delete('/movies/1', headers=self.JWTCD)
+
+        self.assertEqual(res.status_code, 401)
+
+    # A casting director cannot post movie
+    def test_401_post_movie(self):
+        res = self.client().post('/movies', headers=self.JWTCD,
+                                 json=self.actor)
+
+        self.assertEqual(res.status_code, 401)
+
+    # An executive producer can delete movie
+    def test_200_delete_movie(self):
+        res = self.client().delete('/movies/1', headers=self.JWTEP)
+
+        self.assertEqual(res.status_code, 200)
+
+    # An executive producer can post movie
+    def test_200_post_movie(self):
+        res = self.client().post('/movies', headers=self.JWTEP,
+                                 json=self.actor)
+
+        self.assertEqual(res.status_code, 200)
 
 
 # Make the tests conveniently executable
