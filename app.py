@@ -31,14 +31,14 @@ def create_app(test_config=None):
     def get_movie(payload, movie_id):
         movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
 
+        if movie is None:
+            abort(404)
+
         try:
-            if movie is None:
-                abort(404)
-            else:
-                return jsonify({
-                    'success': True,
-                    'movie': movie.format()
-                }), 200
+            return jsonify({
+                'success': True,
+                'movie': movie.format()
+            }), 200
 
         except BaseException:
             abort(422)
@@ -96,16 +96,16 @@ def create_app(test_config=None):
     def delete_movie(payload, movie_id):
         movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
 
-        try:
-            if movie is None:
-                abort(404)
-            else:
-                movie.delete()
+        if movie is None:
+            abort(404)
 
-                return jsonify({
-                    'success': True,
-                    'delete': movie_id,
-                }), 200
+        try:
+            movie.delete()
+
+            return jsonify({
+                'success': True,
+                'delete': movie_id,
+            }), 200
 
         except BaseException:
             abort(422)
